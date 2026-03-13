@@ -207,10 +207,10 @@ go run ./cmd/tetris-optimizer ./audit/examples/hard_example.txt | grep -o '\.' |
 **How to Test:**
 ```bash
 # Count tetrominoes in input
-grep -c '^####' ./audit/examples/good_example_00.txt
+grep -c '^####' ./audit/examples/good_example_01.txt
 
 # Count unique letters in output
-go run ./cmd/tetris-optimizer ./audit/examples/good_example_00.txt | grep -o '[A-Z]' | sort -u | wc -l
+go run ./cmd/tetris-optimizer ./audit/examples/good_example_01.txt | grep -o '[A-Z]' | sort -u | wc -l
 ```
 
 **Checklist:**
@@ -291,7 +291,6 @@ time go run ./cmd/tetris-optimizer ./audit/examples/good_example_02.txt
 time go run ./cmd/tetris-optimizer ./audit/examples/good_example_03.txt
 time go run ./cmd/tetris-optimizer ./audit/examples/hard_example.txt
 
-# All should complete in < 30 seconds
 ```
 
 **Checklist:**
@@ -396,13 +395,14 @@ cat internal/parser/parser.go
 ---
 
 ## Quick Test Commands
-
 ```bash
-# Test all bad examples (should print ERROR)
-for f in ./audit/examples/bad_*.txt; do
-  echo "Testing $f"
-  go run ./cmd/tetris-optimizer "$f"
-done
+#Test all bad examples
+go run ./cmd/tetris-optimizer ./audit/examples/bad_example_00.txt
+go run ./cmd/tetris-optimizer ./audit/examples/bad_example_01.txt
+go run ./cmd/tetris-optimizer ./audit/examples/bad_example_02.txt
+go run ./cmd/tetris-optimizer ./audit/examples/bad_example_03.txt
+go run ./cmd/tetris-optimizer ./audit/examples/bad_example_04.txt
+go run ./cmd/tetris-optimizer ./audit/examples/bad_format.txt
 
 # Test all good examples
 go run ./cmd/tetris-optimizer ./audit/examples/good_example_00.txt
