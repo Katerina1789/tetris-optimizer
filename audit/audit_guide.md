@@ -12,10 +12,6 @@ cat go.mod
 # Expected: Only standard Go packages (no external dependencies)
 ```
 
-**Checklist:**
-- [ ] Only standard library packages used
-- [ ] No third-party dependencies in go.mod
-
 ---
 
 ### Test 2: Bad Example 00
@@ -26,10 +22,6 @@ cat go.mod
 go run ./cmd/tetris-optimizer ./audit/examples/bad_example_00.txt
 # Expected: ERROR
 ```
-
-**Checklist:**
-- [ ] Prints "ERROR"
-- [ ] No crash or panic
 
 ---
 
@@ -42,10 +34,6 @@ go run ./cmd/tetris-optimizer ./audit/examples/bad_example_01.txt
 # Expected: ERROR
 ```
 
-**Checklist:**
-- [ ] Prints "ERROR"
-- [ ] No crash or panic
-
 ---
 
 ### Test 4: Bad Example 02
@@ -56,10 +44,6 @@ go run ./cmd/tetris-optimizer ./audit/examples/bad_example_01.txt
 go run ./cmd/tetris-optimizer ./audit/examples/bad_example_02.txt
 # Expected: ERROR
 ```
-
-**Checklist:**
-- [ ] Prints "ERROR"
-- [ ] No crash or panic
 
 ---
 
@@ -72,10 +56,6 @@ go run ./cmd/tetris-optimizer ./audit/examples/bad_example_03.txt
 # Expected: ERROR
 ```
 
-**Checklist:**
-- [ ] Prints "ERROR"
-- [ ] No crash or panic
-
 ---
 
 ### Test 6: Bad Example 04
@@ -87,10 +67,6 @@ go run ./cmd/tetris-optimizer ./audit/examples/bad_example_04.txt
 # Expected: ERROR
 ```
 
-**Checklist:**
-- [ ] Prints "ERROR"
-- [ ] No crash or panic
-
 ---
 
 ### Test 7: Bad Format
@@ -101,10 +77,6 @@ go run ./cmd/tetris-optimizer ./audit/examples/bad_example_04.txt
 go run ./cmd/tetris-optimizer ./audit/examples/bad_format.txt
 # Expected: ERROR
 ```
-
-**Checklist:**
-- [ ] Prints "ERROR"
-- [ ] No crash or panic
 
 ---
 
@@ -119,11 +91,6 @@ go run ./cmd/tetris-optimizer ./audit/examples/good_example_00.txt | grep -o '\.
 # Expected: 0
 ```
 
-**Checklist:**
-- [ ] Output contains 0 dots
-- [ ] All tetrominoes placed
-- [ ] Valid square board
-
 ---
 
 ### Test 9: Good Example 01
@@ -136,11 +103,6 @@ go run ./cmd/tetris-optimizer ./audit/examples/good_example_01.txt
 go run ./cmd/tetris-optimizer ./audit/examples/good_example_01.txt | grep -o '\.' | wc -l
 # Expected: 9
 ```
-
-**Checklist:**
-- [ ] Output contains 9 dots
-- [ ] All tetrominoes placed
-- [ ] Valid square board
 
 ---
 
@@ -155,12 +117,6 @@ go run ./cmd/tetris-optimizer ./audit/examples/good_example_02.txt | grep -o '\.
 # Expected: 4 dots, time < 30s
 ```
 
-**Checklist:**
-- [ ] Output contains 4 dots
-- [ ] Execution time ≤ 30 seconds
-- [ ] All tetrominoes placed
-- [ ] Valid square board
-
 ---
 
 ### Test 11: Good Example 03
@@ -174,12 +130,6 @@ go run ./cmd/tetris-optimizer ./audit/examples/good_example_03.txt | grep -o '\.
 # Expected: 5 dots, time < 30s
 ```
 
-**Checklist:**
-- [ ] Output contains 5 dots
-- [ ] Execution time ≤ 30 seconds
-- [ ] All tetrominoes placed
-- [ ] Valid square board
-
 ---
 
 ### Test 12: Hard Example
@@ -192,12 +142,6 @@ time go run ./cmd/tetris-optimizer ./audit/examples/hard_example.txt
 go run ./cmd/tetris-optimizer ./audit/examples/hard_example.txt | grep -o '\.' | wc -l
 # Expected: 1 dot, time < 30s
 ```
-
-**Checklist:**
-- [ ] Output contains 1 dot
-- [ ] Execution time ≤ 30 seconds
-- [ ] All tetrominoes placed
-- [ ] Valid square board
 
 ---
 
@@ -213,11 +157,6 @@ grep -c '^####' ./audit/examples/good_example_01.txt
 go run ./cmd/tetris-optimizer ./audit/examples/good_example_01.txt | grep -o '[A-Z]' | sort -u | wc -l
 ```
 
-**Checklist:**
-- [ ] All input tetrominoes appear in output
-- [ ] No missing pieces
-- [ ] Correct count
-
 ---
 
 ### Test 14: Character Uniqueness
@@ -229,11 +168,6 @@ go run ./cmd/tetris-optimizer ./audit/examples/good_example_01.txt | grep -o '[A
 go run ./cmd/tetris-optimizer ./audit/examples/good_example_01.txt
 ```
 
-**Checklist:**
-- [ ] Each tetromino has unique character (A, B, C, ...)
-- [ ] No character reuse
-- [ ] Clear visual distinction
-
 ---
 
 ### Test 15: Single Character Per Tetromino
@@ -244,11 +178,6 @@ go run ./cmd/tetris-optimizer ./audit/examples/good_example_01.txt
 # Visual inspection
 go run ./cmd/tetris-optimizer ./audit/examples/good_example_00.txt
 ```
-
-**Checklist:**
-- [ ] Each tetromino uses exactly one letter
-- [ ] No mixed characters in single piece
-- [ ] Consistent labeling
 
 ---
 
@@ -293,13 +222,6 @@ time go run ./cmd/tetris-optimizer ./audit/examples/hard_example.txt
 
 ```
 
-**Checklist:**
-- [ ] Fast execution times
-- [ ] No unnecessary data requests
-- [ ] Efficient backtracking algorithm
-- [ ] Proper recursion usage
-- [ ] No performance bottlenecks
-
 ---
 
 ### Test 18: Test Files
@@ -314,14 +236,6 @@ ls testfiles/
 go test ./testfiles/...
 ```
 
-**Checklist:**
-- [ ] Test files exist in `testfiles/`
-- [ ] Tests for board logic
-- [ ] Tests for parser logic
-- [ ] Tests for solver logic
-- [ ] Tests for tetromino logic
-- [ ] All tests pass
-
 ---
 
 ### Test 19: Test Coverage
@@ -334,17 +248,7 @@ go test ./testfiles/board -coverpkg=./internal/board -cover
 go test ./testfiles/parser -coverpkg=./internal/parser -cover
 go test ./testfiles/solver -coverpkg=./internal/solver -cover
 go test ./testfiles/tetromino -coverpkg=./internal/tetromino -cover
-go test ./testfiles/main -coverpkg=./cmd/tetris-optimizer -cover
 ```
-
-**Test Cases to Check:**
-- [ ] Valid tetromino parsing
-- [ ] Invalid input handling
-- [ ] Board placement logic
-- [ ] Rotation generation
-- [ ] Normalization
-- [ ] Backtracking algorithm
-- [ ] Edge cases covered
 
 ---
 
