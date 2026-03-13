@@ -28,5 +28,5 @@ func Solve(tetros []tetromino.Tetromino) (*board.Board, error) {
 			return b, nil
 		}
 	}
-	return nil, fmt.Errorf("no solution")
+	return nil, fmt.Errorf("No solution found: unable to fit all tetrominoes on board")
 }

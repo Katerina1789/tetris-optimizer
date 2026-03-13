@@ -13,7 +13,7 @@ import (
 func ParseFile(path string) ([]tetromino.Tetromino, error) {
 	f, err := os.Open(path)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Cannot open file: %v", err)
 	}
 	defer f.Close()
 
@@ -53,17 +53,17 @@ func ParseFile(path string) ([]tetromino.Tetromino, error) {
 // ParseTetrominoBlock converts a 4x4 block of lines into a validated Tetromino.
 func ParseTetrominoBlock(lines []string, id rune) (tetromino.Tetromino, error) {
 	if len(lines) != 4 {
-		return tetromino.Tetromino{}, fmt.Errorf("invalid block height")
+		return tetromino.Tetromino{}, fmt.Errorf("Invalid tetromino height: expected 4 lines, got %d", len(lines))
 	}
 	grid := make([][]rune, 4)
 	for i := 0; i < 4; i++ {
 		if len(lines[i]) != 4 {
-			return tetromino.Tetromino{}, fmt.Errorf("invalid block width")
+			return tetromino.Tetromino{}, fmt.Errorf("Invalid tetromino width: expected 4 characters per line, got %d on line %d", len(lines[i]), i+1)
 		}
 		row := []rune(lines[i])
 		for _, c := range row {
 			if c != '#' && c != '.' {
-				return tetromino.Tetromino{}, fmt.Errorf("invalid char")
+				return tetromino.Tetromino{}, fmt.Errorf("Invalid character '%c': only '#' and '.' are allowed", c)
 			}
 		}
 		grid[i] = row

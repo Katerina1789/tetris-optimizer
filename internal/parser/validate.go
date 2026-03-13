@@ -15,7 +15,7 @@ func ValidateGrid(grid [][]rune) error {
 		}
 	}
 	if len(cells) != 4 {
-		return fmt.Errorf("must have 4 blocks")
+		return fmt.Errorf("Invalid number of blocks: expected 4 '#' characters, got %d", len(cells))
 	}
 
 	visited := map[point]bool{}
@@ -42,7 +42,7 @@ func ValidateGrid(grid [][]rune) error {
 		}
 	}
 	if len(visited) != 4 {
-		return fmt.Errorf("blocks not connected")
+		return fmt.Errorf("Blocks not connected: all 4 blocks must be adjacent (up/down/left/right)")
 	}
 	return nil
 }

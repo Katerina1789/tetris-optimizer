@@ -12,20 +12,24 @@ import (
 
 func main() {
 	if len(os.Args) != 2 {
-		fmt.Println("ERROR")
+		fmt.Println("ERROR: Input should be: go run ./cmd/tetris-optimizer <input_file>")
 		return
 	}
 
 	path := os.Args[1]
 	tetros, err := parser.ParseFile(path)
-	if err != nil || len(tetros) == 0 {
-		fmt.Println("ERROR")
+	if err != nil {
+		fmt.Printf("ERROR: %v\n", err)
+		return
+	}
+	if len(tetros) == 0 {
+		fmt.Println("ERROR: No tetrominoes found in file")
 		return
 	}
 
 	board, err := solver.Solve(tetros)
 	if err != nil {
-		fmt.Println("ERROR")
+		fmt.Printf("ERROR: %v\n", err)
 		return
 	}
 
