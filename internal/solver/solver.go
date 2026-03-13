@@ -17,9 +17,18 @@ func Solve(tetros []tetromino.Tetromino) (*board.Board, error) {
 	n := len(tetros)
 	minSize := int(math.Ceil(math.Sqrt(float64(n * 4))))
 
-	for size := minSize; size <= 20; size++ { // 20 is a safe upper bound for typical inputs
+	// Sort tetrominoes by constraint (fewer rotations first)
+	// sortByConstraint(tetros)  // ← comment this out for now
+
+	// Precompute rotations once
+	rotSets := make([][]tetromino.Tetromino, len(tetros))
+	for i, t := range tetros {
+		rotSets[i] = tetromino.Rotations(t)
+	}
+
+	for size := minSize; size <= 20; size++ {
 		b := board.New(size)
-		if backtrack(b, tetros, 0) {
+		if backtrack(b, rotSets, 0) {
 			return b, nil
 		}
 	}
