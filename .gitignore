@@ -1,16 +1,17 @@
 # Binaries
+tetris-optimizer
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
-tetris-optimizer
 
 # Test binary
 *.test
 
 # Output of the go coverage tool
 *.out
+coverage.tmp
 
 # Go workspace file
 go.work
