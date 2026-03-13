@@ -1,7 +1,5 @@
 package parser
 
-// Validation helpers: ensure each tetromino has 4 blocks and is connected.
-
 import "fmt"
 
 type point struct{ r, c int }

@@ -7,7 +7,7 @@ func Rotations(t Tetromino) []Tetromino {
 
 	cur := t.Blocks
 	for i := 0; i < 4; i++ {
-		norm := normalize(cur)
+		norm := Normalize(cur)
 		key := keyOf(norm)
 		if !seen[key] {
 			seen[key] = true

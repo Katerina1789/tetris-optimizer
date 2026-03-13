@@ -1,7 +1,5 @@
 package board
 
-// Package board defines the square board and basic operations on it.
-
 import (
 	"strings"
 )

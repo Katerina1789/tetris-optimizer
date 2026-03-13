@@ -1,13 +1,9 @@
 package solver
 
-// Heuristics for improving backtracking performance.
-// These keep the solver minimal, clean, and audit‑friendly.
-
 import "tetris-optimizer/internal/tetromino"
 
-// sortByConstraint orders tetrominoes so the most restrictive ones go first.
-// Restrictive = fewer unique rotations → fewer valid placements → better pruning.
-func sortByConstraint(tetros []tetromino.Tetromino) {
+// SortByConstraint orders tetrominoes so the most restrictive ones go first, restrictive = fewer unique rotations → fewer valid placements → better pruning.
+func SortByConstraint(tetros []tetromino.Tetromino) {
 	type pair struct {
 		t   tetromino.Tetromino
 		key int

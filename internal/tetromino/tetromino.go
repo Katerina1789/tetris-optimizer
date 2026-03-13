@@ -1,7 +1,5 @@
 package tetromino
 
-// Package tetromino defines the Tetromino type and helpers to build it from a grid.
-
 type Point struct {
 	R, C int
 }
@@ -21,6 +19,6 @@ func FromGrid(grid [][]rune, id rune) Tetromino {
 			}
 		}
 	}
-	pts = normalize(pts)
+	pts = Normalize(pts)
 	return Tetromino{Blocks: pts, ID: id}
 }

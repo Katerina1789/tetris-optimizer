@@ -1,15 +1,12 @@
 package solver
 
-// Backtracking search: tries to place tetrominoes one by one.
-
 import (
 	"tetris-optimizer/internal/board"
 	"tetris-optimizer/internal/tetromino"
 )
 
-// backtrack attempts to place tetros[idx:] on the board.
-// Returns true when all tetrominoes are placed.
-func backtrack(b *board.Board, rotSets [][]tetromino.Tetromino, idx int) bool {
+// Backtrack attempts to place tetros[idx:] on the board and returns true when all tetrominoes are placed.
+func Backtrack(b *board.Board, rotSets [][]tetromino.Tetromino, idx int) bool {
 	if idx == len(rotSets) {
 		return true
 	}
@@ -40,7 +37,7 @@ func backtrack(b *board.Board, rotSets [][]tetromino.Tetromino, idx int) bool {
 				baseC := fc + dc
 
 				if b.Place(rt, baseR, baseC) {
-					if backtrack(b, rotSets, idx+1) {
+					if Backtrack(b, rotSets, idx+1) {
 						return true
 					}
 					b.Remove(rt, baseR, baseC)
@@ -52,8 +49,8 @@ func backtrack(b *board.Board, rotSets [][]tetromino.Tetromino, idx int) bool {
 	return false
 }
 
-// quickPrune checks if continuing is pointless.
-func quickPrune(b *board.Board, remaining int) bool {
+// QuickPrune checks if continuing is pointless.
+func QuickPrune(b *board.Board, remaining int) bool {
 	empty := 0
 	for r := 0; r < b.Size; r++ {
 		for c := 0; c < b.Size; c++ {

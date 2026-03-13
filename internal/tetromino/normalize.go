@@ -1,7 +1,7 @@
 package tetromino
 
-// normalize shifts blocks so that the shape's top-left is at (0,0).
-func normalize(blocks []Point) []Point {
+// Normalize shifts blocks so that the shape's top-left is at (0,0).
+func Normalize(blocks []Point) []Point {
 	if len(blocks) == 0 {
 		return blocks
 	}

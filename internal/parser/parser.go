@@ -1,8 +1,5 @@
 package parser
 
-// Package parser reads the input file, splits tetromino blocks,
-// validates them, and converts them into Tetromino structs.
-
 import (
 	"bufio"
 	"fmt"
@@ -44,7 +41,7 @@ func ParseFile(path string) ([]tetromino.Tetromino, error) {
 
 	var tetros []tetromino.Tetromino
 	for i, b := range blocks {
-		t, err := parseTetrominoBlock(b, rune('A'+i))
+		t, err := ParseTetrominoBlock(b, rune('A'+i))
 		if err != nil {
 			return nil, err
 		}
@@ -53,8 +50,8 @@ func ParseFile(path string) ([]tetromino.Tetromino, error) {
 	return tetros, nil
 }
 
-// parseTetrominoBlock converts a 4x4 block of lines into a validated Tetromino.
-func parseTetrominoBlock(lines []string, id rune) (tetromino.Tetromino, error) {
+// ParseTetrominoBlock converts a 4x4 block of lines into a validated Tetromino.
+func ParseTetrominoBlock(lines []string, id rune) (tetromino.Tetromino, error) {
 	if len(lines) != 4 {
 		return tetromino.Tetromino{}, fmt.Errorf("invalid block height")
 	}
