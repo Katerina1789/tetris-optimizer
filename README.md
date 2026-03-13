@@ -1,10 +1,10 @@
 # Tetris-Optimizer
 
-[![Go Version](https://img.shields.io/badge/Go-1.23-blue.svg)](https://golang.org/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Zone01](https://img.shields.io/badge/Zone01-Athens-orange.svg)](https://zone01.gr/)
+![Go Version](https://img.shields.io/badge/go-1.23+-00ADD8?style=for-the-badge&logo=go&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge&logo=opensourceinitiative&logoColor=white)
+![Zone01](https://img.shields.io/badge/Zone01-Athens-FF6B35?style=for-the-badge&logo=42&logoColor=white)
 
-A Go program that solves the tetromino packing problem using optimized backtracking. Given a set of tetrominoes, it finds the smallest square board that can fit all pieces without gaps or overlaps.
+A Go program that solves the tetromino packing problem using optimized backtracking. Given a set of tetrominoes, it finds the smallest square board that can fit all pieces without gaps or overlaps. Project made as part of the Zone01 Athens curriculum.
 
 ## Table of Contents
 
@@ -18,7 +18,6 @@ A Go program that solves the tetromino packing problem using optimized backtrack
 - [Output Format](#output-format)
 - [Testing](#testing)
 - [Documentation](#documentation)
-- [Performance](#performance)
 - [Author](#author)
 - [License](#license)
 
@@ -49,7 +48,7 @@ The program reads tetrominoes from a file, validates their structure, generates 
 ### Professional Structure
 
 - **Modular Architecture**: Clean separation of concerns (parser, solver, board, tetromino)
-- **Comprehensive Testing**: 27 unit tests covering all components
+- **Comprehensive Testing**: 28 unit tests with 90% code coverage
 - **Clean Code**: Follows Go conventions and best practices
 - **Documentation**: Detailed architecture, algorithm, and flow diagrams
 - **Audit Ready**: Complete test suite for evaluation
@@ -70,12 +69,13 @@ tetris-optimizer/
 │   │   └── validate.go
 │   ├── solver/                  # Solving algorithm
 │   │   ├── solver.go
-│   │   └── backtracking.go
+│   │   ├── backtracking.go
+│   │   └── heuristics.go
 │   └── tetromino/               # Tetromino structure and operations
 │       ├── tetromino.go
 │       ├── rotations.go
 │       └── normalize.go
-├── testfiles/                   # Unit tests (27 tests)
+├── testfiles/                   # Unit tests (28 tests, 90% coverage)
 │   ├── board/
 │   ├── parser/
 │   ├── solver/
@@ -192,7 +192,7 @@ Return ERROR if no solution found
 
 **Key Optimization:** Only trying positions that cover the first empty cell reduces the search space from O(N²) to O(4) per piece, enabling solutions in under 1 second for typical inputs.
 
-For detailed algorithm explanation, see [docs/algorithm.md](docs/algorithm.md).
+For detailed algorithm explanation, see [algorithm](docs/algorithm.md).
 
 ## Input Format
 
@@ -283,22 +283,16 @@ make coverage
 go tool cover -html=coverage.out
 ```
 
-### Test Structure
-
-- **board/**: 8 tests (board operations, placement, removal)
-- **parser/**: 8 tests (file parsing, validation)
-- **solver/**: 4 tests (solving algorithm, backtracking)
-- **tetromino/**: 7 tests (creation, rotations, normalization)
-
-**Total: 27 unit tests, all passing**
-
 ### Audit Tests
 
 ```bash
-# Test all bad examples (should print ERROR)
-for f in ./audit/examples/bad_*.txt; do
-  go run ./cmd/tetris-optimizer "$f"
-done
+# Test all bad examples 
+go run ./cmd/tetris-optimizer ./audit/examples/bad_example_00.txt
+go run ./cmd/tetris-optimizer ./audit/examples/bad_example_01.txt
+go run ./cmd/tetris-optimizer ./audit/examples/bad_example_02.txt
+go run ./cmd/tetris-optimizer ./audit/examples/bad_example_03.txt
+go run ./cmd/tetris-optimizer ./audit/examples/bad_example_04.txt
+go run ./cmd/tetris-optimizer ./audit/examples/bad_format.txt
 
 # Test all good examples
 go run ./cmd/tetris-optimizer ./audit/examples/good_example_00.txt
@@ -308,7 +302,7 @@ go run ./cmd/tetris-optimizer ./audit/examples/good_example_03.txt
 go run ./cmd/tetris-optimizer ./audit/examples/hard_example.txt
 ```
 
-For complete audit guide, see [audit/audit_guide.md](audit/audit_guide.md).
+For complete audit guide, see [audit guide](audit/audit_guide.md).
 
 ## Documentation
 
@@ -316,120 +310,10 @@ For complete audit guide, see [audit/audit_guide.md](audit/audit_guide.md).
 - [Algorithm](docs/algorithm.md) - In-depth algorithm explanation with complexity analysis
 - [Flowchart](docs/flowchart.md) - Visual process flows and execution diagrams
 
-## Performance
-
-### Benchmarks
-
-| Test Case | Tetrominoes | Board Size | Time |
-|-----------|-------------|------------|------|
-| good_example_00 | 1 | 2×2 | < 0.1s |
-| good_example_01 | 4 | 5×5 | < 0.1s |
-| good_example_02 | 8 | 8×8 | < 0.1s |
-| good_example_03 | 15 | 15×15 | < 0.1s |
-| hard_example | 12 | 17×17 | < 0.1s |
-
-**All test cases complete in under 30 seconds** (requirement met with significant margin).
-
-### Optimization Impact
-
-- **Without optimization**: hard_example times out (> 30s)
-- **With first-empty-cell optimization**: hard_example completes in ~0.07s
-- **Speedup**: ~400× faster
-
-### Complexity
-
-- **Time**: O(N × R × 4) per board size (optimized)
-- **Space**: O(N × S²) where S is board size
-- **Practical**: < 1 second for N ≤ 26
-
 ## Author
 
 **Katerina Kasdanastasi**
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Examples
-
-### Example 1: Single Square
-
-**Input:**
-```
-....
-.##.
-.##.
-....
-```
-
-**Output:**
-```
-AA
-AA
-```
-
-### Example 2: Two Pieces
-
-**Input:**
-```
-....
-.##.
-.##.
-....
-
-.#..
-.##.
-.#..
-....
-```
-
-**Output:**
-```
-AABBB
-AACBB
-...C.
-...C.
-.....
-```
-
-### Example 3: Complex Layout
-
-**Input:** 8 tetrominoes (various shapes)
-
-**Output:** 8×8 board with all pieces optimally placed
-
-See [audit/examples/](audit/examples/) for more test cases.
-
----
-
-## Quick Reference
-
-### Commands
-
-```bash
-# Build
-make build
-
-# Run
-go run ./cmd/tetris-optimizer <file>
-
-# Test
-make test
-
-# Coverage
-make coverage
-
-# Clean
-make clean
-```
-
-### Error Messages
-
-- `ERROR` - Invalid input, parse failure, or no solution found
-
-### Exit Codes
-
-- `0` - Success
-- Non-zero - Error occurred
+This project is licensed under the [MIT License](LICENSE).

@@ -330,7 +330,11 @@ go test ./testfiles/...
 **How to Test:**
 ```bash
 # Run tests with coverage
-go test -cover ./testfiles/...
+go test ./testfiles/board -coverpkg=./internal/board -cover
+go test ./testfiles/parser -coverpkg=./internal/parser -cover
+go test ./testfiles/solver -coverpkg=./internal/solver -cover
+go test ./testfiles/tetromino -coverpkg=./internal/tetromino -cover
+go test ./testfiles/main -coverpkg=./cmd/tetris-optimizer -cover
 ```
 
 **Test Cases to Check:**
