@@ -81,7 +81,7 @@ func TestRotationsUnique(t *testing.T) {
 		ID:     'L',
 	}
 	rots := tetromino.Rotations(tet)
-	
+
 	// Check that no two rotations are identical
 	for i := 0; i < len(rots); i++ {
 		for j := i + 1; j < len(rots); j++ {

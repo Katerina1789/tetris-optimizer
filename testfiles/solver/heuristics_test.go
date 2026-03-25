@@ -23,15 +23,15 @@ func TestSortByConstraint(t *testing.T) {
 	}
 
 	tetros := []tetromino.Tetromino{lShape, square, line}
-	
+
 	// Sort by constraint (fewer rotations first)
 	solver.SortByConstraint(tetros)
-	
+
 	// Verify IDs are preserved
 	if tetros[0].ID != 'C' && tetros[0].ID != 'A' && tetros[0].ID != 'B' {
 		t.Error("expected valid tetromino IDs after sorting")
 	}
-	
+
 	// Verify all tetrominoes are still present
 	ids := make(map[rune]bool)
 	for _, tet := range tetros {

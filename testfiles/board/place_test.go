@@ -66,13 +66,13 @@ func TestFirstEmpty(t *testing.T) {
 	if !found || r != 0 || c != 0 {
 		t.Errorf("expected first empty at (0,0), got (%d,%d) found=%v", r, c, found)
 	}
-	
+
 	b.Cells[0][0] = 'A'
 	r, c, found = b.FirstEmpty()
 	if !found || r != 0 || c != 1 {
 		t.Errorf("expected first empty at (0,1), got (%d,%d) found=%v", r, c, found)
 	}
-	
+
 	// Fill entire board
 	for i := 0; i < 3; i++ {
 		for j := 0; j < 3; j++ {

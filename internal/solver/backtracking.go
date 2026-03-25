@@ -48,22 +48,3 @@ func Backtrack(b *board.Board, rotSets [][]tetromino.Tetromino, idx int) bool {
 
 	return false
 }
-
-// QuickPrune checks if continuing is pointless.
-func QuickPrune(b *board.Board, remaining int) bool {
-	empty := 0
-	for r := 0; r < b.Size; r++ {
-		for c := 0; c < b.Size; c++ {
-			if b.Cells[r][c] == '.' {
-				empty++
-			}
-		}
-	}
-
-	// Only safe prune: not enough space left for remaining tetrominoes
-	if empty < remaining*4 {
-		return true
-	}
-
-	return false
-}
