@@ -13,9 +13,10 @@ func TestNormalizeAlreadyNormalized(t *testing.T) {
 		{'.', '.', '.', '.'},
 		{'.', '.', '.', '.'},
 	}
-	tet := tetromino.FromGrid(grid, 'A')
-	if tet.Blocks[0].R != 0 || tet.Blocks[0].C != 0 {
-		t.Errorf("expected first block at (0,0), got (%d,%d)", tet.Blocks[0].R, tet.Blocks[0].C)
+
+	result := tetromino.FromGrid(grid, 'A')
+	if result.Blocks[0].Row != 0 || result.Blocks[0].Column != 0 {
+		t.Errorf("expected first block at (0,0), got (%d,%d)", result.Blocks[0].Row, result.Blocks[0].Column)
 	}
 }
 
@@ -26,17 +27,19 @@ func TestNormalizeOffset(t *testing.T) {
 		{'.', '.', '#', '#'},
 		{'.', '.', '.', '.'},
 	}
-	tet := tetromino.FromGrid(grid, 'B')
-	minR, minC := tet.Blocks[0].R, tet.Blocks[0].C
-	for _, p := range tet.Blocks {
-		if p.R < minR {
-			minR = p.R
+
+	result := tetromino.FromGrid(grid, 'B')
+	minimumRow, minimumColumn := result.Blocks[0].Row, result.Blocks[0].Column
+	for _, point := range result.Blocks {
+		if point.Row < minimumRow {
+			minimumRow = point.Row
 		}
-		if p.C < minC {
-			minC = p.C
+		if point.Column < minimumColumn {
+			minimumColumn = point.Column
 		}
 	}
-	if minR != 0 || minC != 0 {
-		t.Errorf("expected normalized to start at (0,0), got min (%d,%d)", minR, minC)
+
+	if minimumRow != 0 || minimumColumn != 0 {
+		t.Errorf("expected normalized to start at (0,0), got min (%d,%d)", minimumRow, minimumColumn)
 	}
 }

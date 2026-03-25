@@ -1,4 +1,4 @@
-.PHONY: all build run test coverage clean
+.PHONY: all build run test coverage clean bench profile
 
 # Build binary
 build:
@@ -30,10 +30,20 @@ coverage:
 
 	go tool cover -func=coverage.out
 
+# Run benchmarks with CPU and memory stats
+bench:
+	go test -bench=. -benchmem -cpuprofile=cpu.prof -memprofile=mem.prof ./testfiles/...
+
+# Run tests with CPU and memory profiling
+profile:
+	go test -v -cpuprofile=cpu.prof -memprofile=mem.prof ./testfiles/...
+	@echo "\nTo analyze CPU profile: go tool pprof cpu.prof"
+	@echo "To analyze memory profile: go tool pprof mem.prof"
+
 # Clean generated files
 clean:
-	rm -f tetris-optimizer coverage.out
-	rm -f coverage.tmp
+	rm -f tetris-optimizer coverage.out coverage.tmp
+	rm -f cpu.prof mem.prof
 
 # Run all checks
 all: test

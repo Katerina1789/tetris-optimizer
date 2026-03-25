@@ -7,97 +7,131 @@ import (
 )
 
 func TestRotationsSquare(t *testing.T) {
-	tet := tetromino.Tetromino{
-		Blocks: []tetromino.Point{{R: 0, C: 0}, {R: 0, C: 1}, {R: 1, C: 0}, {R: 1, C: 1}},
-		ID:     'A',
+	squareTetromino := tetromino.Tetromino{
+		Blocks: []tetromino.Point{
+			{Row: 0, Column: 0},
+			{Row: 0, Column: 1},
+			{Row: 1, Column: 0},
+			{Row: 1, Column: 1},
+		},
+		ID: 'A',
 	}
-	rots := tetromino.Rotations(tet)
-	if len(rots) < 1 || len(rots) > 4 {
-		t.Errorf("square should have 1-4 rotations, got %d", len(rots))
+
+	rotations := tetromino.Rotations(squareTetromino)
+	if len(rotations) < 1 || len(rotations) > 4 {
+		t.Errorf("square should have 1-4 rotations, got %d", len(rotations))
 	}
+
 	// All rotations should have same ID
-	for _, rot := range rots {
-		if rot.ID != 'A' {
-			t.Errorf("expected ID 'A' in rotation, got %c", rot.ID)
+	for _, rotation := range rotations {
+		if rotation.ID != 'A' {
+			t.Errorf("expected ID 'A' in rotation, got %c", rotation.ID)
 		}
-		if len(rot.Blocks) != 4 {
-			t.Errorf("expected 4 blocks in rotation, got %d", len(rot.Blocks))
+		if len(rotation.Blocks) != 4 {
+			t.Errorf("expected 4 blocks in rotation, got %d", len(rotation.Blocks))
 		}
 	}
 }
 
 func TestRotationsLine(t *testing.T) {
-	tet := tetromino.Tetromino{
-		Blocks: []tetromino.Point{{R: 0, C: 0}, {R: 1, C: 0}, {R: 2, C: 0}, {R: 3, C: 0}},
-		ID:     'B',
+	lineTetromino := tetromino.Tetromino{
+		Blocks: []tetromino.Point{
+			{Row: 0, Column: 0},
+			{Row: 1, Column: 0},
+			{Row: 2, Column: 0},
+			{Row: 3, Column: 0},
+		},
+		ID: 'B',
 	}
-	rots := tetromino.Rotations(tet)
-	if len(rots) < 2 || len(rots) > 4 {
-		t.Errorf("line should have 2-4 rotations, got %d", len(rots))
+
+	rotations := tetromino.Rotations(lineTetromino)
+	if len(rotations) < 2 || len(rotations) > 4 {
+		t.Errorf("line should have 2-4 rotations, got %d", len(rotations))
 	}
-	for _, rot := range rots {
-		if rot.ID != 'B' {
-			t.Errorf("expected ID 'B' in rotation, got %c", rot.ID)
+
+	for _, rotation := range rotations {
+		if rotation.ID != 'B' {
+			t.Errorf("expected ID 'B' in rotation, got %c", rotation.ID)
 		}
 	}
 }
 
 func TestRotationsL(t *testing.T) {
-	tet := tetromino.Tetromino{
-		Blocks: []tetromino.Point{{R: 0, C: 0}, {R: 1, C: 0}, {R: 2, C: 0}, {R: 2, C: 1}},
-		ID:     'C',
+	lShapeTetromino := tetromino.Tetromino{
+		Blocks: []tetromino.Point{
+			{Row: 0, Column: 0},
+			{Row: 1, Column: 0},
+			{Row: 2, Column: 0},
+			{Row: 2, Column: 1},
+		},
+		ID: 'C',
 	}
-	rots := tetromino.Rotations(tet)
-	if len(rots) != 4 {
-		t.Errorf("L-shape should have 4 unique rotations, got %d", len(rots))
+
+	rotations := tetromino.Rotations(lShapeTetromino)
+	if len(rotations) != 4 {
+		t.Errorf("L-shape should have 4 unique rotations, got %d", len(rotations))
 	}
-	for _, rot := range rots {
-		if rot.ID != 'C' {
-			t.Errorf("expected ID 'C' in rotation, got %c", rot.ID)
+
+	for _, rotation := range rotations {
+		if rotation.ID != 'C' {
+			t.Errorf("expected ID 'C' in rotation, got %c", rotation.ID)
 		}
 	}
 }
 
 func TestRotationsT(t *testing.T) {
-	tet := tetromino.Tetromino{
-		Blocks: []tetromino.Point{{R: 0, C: 1}, {R: 1, C: 0}, {R: 1, C: 1}, {R: 1, C: 2}},
-		ID:     'D',
+	tShapeTetromino := tetromino.Tetromino{
+		Blocks: []tetromino.Point{
+			{Row: 0, Column: 1},
+			{Row: 1, Column: 0},
+			{Row: 1, Column: 1},
+			{Row: 1, Column: 2},
+		},
+		ID: 'D',
 	}
-	rots := tetromino.Rotations(tet)
-	if len(rots) != 4 {
-		t.Errorf("T-shape should have 4 unique rotations, got %d", len(rots))
+
+	rotations := tetromino.Rotations(tShapeTetromino)
+	if len(rotations) != 4 {
+		t.Errorf("T-shape should have 4 unique rotations, got %d", len(rotations))
 	}
-	for _, rot := range rots {
-		if rot.ID != 'D' {
-			t.Errorf("expected ID 'D' in rotation, got %c", rot.ID)
+
+	for _, rotation := range rotations {
+		if rotation.ID != 'D' {
+			t.Errorf("expected ID 'D' in rotation, got %c", rotation.ID)
 		}
 	}
 }
 
 func TestRotationsUnique(t *testing.T) {
 	// Test that rotations are actually unique
-	tet := tetromino.Tetromino{
-		Blocks: []tetromino.Point{{R: 0, C: 0}, {R: 1, C: 0}, {R: 2, C: 0}, {R: 2, C: 1}},
-		ID:     'L',
+	lShapeTetromino := tetromino.Tetromino{
+		Blocks: []tetromino.Point{
+			{Row: 0, Column: 0},
+			{Row: 1, Column: 0},
+			{Row: 2, Column: 0},
+			{Row: 2, Column: 1},
+		},
+		ID: 'L',
 	}
-	rots := tetromino.Rotations(tet)
+
+	rotations := tetromino.Rotations(lShapeTetromino)
 
 	// Check that no two rotations are identical
-	for i := 0; i < len(rots); i++ {
-		for j := i + 1; j < len(rots); j++ {
-			if blocksEqual(rots[i].Blocks, rots[j].Blocks) {
-				t.Errorf("found duplicate rotations at indices %d and %d", i, j)
+	for firstIndex := 0; firstIndex < len(rotations); firstIndex++ {
+		for secondIndex := firstIndex + 1; secondIndex < len(rotations); secondIndex++ {
+			if blocksEqual(rotations[firstIndex].Blocks, rotations[secondIndex].Blocks) {
+				t.Errorf("found duplicate rotations at indices %d and %d", firstIndex, secondIndex)
 			}
 		}
 	}
 }
 
-func blocksEqual(a, b []tetromino.Point) bool {
-	if len(a) != len(b) {
+func blocksEqual(firstBlocks, secondBlocks []tetromino.Point) bool {
+	if len(firstBlocks) != len(secondBlocks) {
 		return false
 	}
-	for i := range a {
-		if a[i] != b[i] {
+	for index := range firstBlocks {
+		if firstBlocks[index] != secondBlocks[index] {
 			return false
 		}
 	}

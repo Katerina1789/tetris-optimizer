@@ -3,20 +3,21 @@ package parser_test
 import (
 	"os"
 	"testing"
+
 	"tetris-optimizer/internal/parser"
 )
 
 func writeTemp(t *testing.T, content string) string {
 	t.Helper()
-	f, err := os.CreateTemp("", "tetro*.txt")
+	tempFile, err := os.CreateTemp("", "tetro*.txt")
 	if err != nil {
 		t.Fatalf("temp file error: %v", err)
 	}
-	if _, err := f.WriteString(content); err != nil {
+	if _, err := tempFile.WriteString(content); err != nil {
 		t.Fatalf("write error: %v", err)
 	}
-	f.Close()
-	return f.Name()
+	tempFile.Close()
+	return tempFile.Name()
 }
 
 func TestParseFileSingleValid(t *testing.T) {
@@ -25,18 +26,18 @@ func TestParseFileSingleValid(t *testing.T) {
 ....
 ....
 `
-	path := writeTemp(t, content)
-	defer os.Remove(path)
+	filePath := writeTemp(t, content)
+	defer os.Remove(filePath)
 
-	tetros, err := parser.ParseFile(path)
+	tetrominoes, err := parser.ParseFile(filePath)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(tetros) != 1 {
-		t.Fatalf("expected 1 tetromino, got %d", len(tetros))
+	if len(tetrominoes) != 1 {
+		t.Fatalf("expected 1 tetromino, got %d", len(tetrominoes))
 	}
-	if tetros[0].ID != 'A' {
-		t.Fatalf("expected ID A, got %c", tetros[0].ID)
+	if tetrominoes[0].ID != 'A' {
+		t.Fatalf("expected ID A, got %c", tetrominoes[0].ID)
 	}
 }
 
@@ -51,15 +52,15 @@ func TestParseFileMultiple(t *testing.T) {
 #...
 #...
 `
-	path := writeTemp(t, content)
-	defer os.Remove(path)
+	filePath := writeTemp(t, content)
+	defer os.Remove(filePath)
 
-	tetros, err := parser.ParseFile(path)
+	tetrominoes, err := parser.ParseFile(filePath)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(tetros) != 2 {
-		t.Fatalf("expected 2 tetrominoes, got %d", len(tetros))
+	if len(tetrominoes) != 2 {
+		t.Fatalf("expected 2 tetrominoes, got %d", len(tetrominoes))
 	}
 }
 
@@ -69,10 +70,10 @@ func TestParseFileInvalidHeight(t *testing.T) {
 ....
 ` // only 3 lines
 
-	path := writeTemp(t, content)
-	defer os.Remove(path)
+	filePath := writeTemp(t, content)
+	defer os.Remove(filePath)
 
-	if _, err := parser.ParseFile(path); err == nil {
+	if _, err := parser.ParseFile(filePath); err == nil {
 		t.Fatalf("expected height error")
 	}
 }
@@ -83,10 +84,10 @@ func TestParseFileInvalidWidth(t *testing.T) {
 .....
 ....
 `
-	path := writeTemp(t, content)
-	defer os.Remove(path)
+	filePath := writeTemp(t, content)
+	defer os.Remove(filePath)
 
-	if _, err := parser.ParseFile(path); err == nil {
+	if _, err := parser.ParseFile(filePath); err == nil {
 		t.Fatalf("expected width error")
 	}
 }
@@ -97,10 +98,10 @@ func TestParseFileInvalidChar(t *testing.T) {
 ....
 ....
 `
-	path := writeTemp(t, content)
-	defer os.Remove(path)
+	filePath := writeTemp(t, content)
+	defer os.Remove(filePath)
 
-	if _, err := parser.ParseFile(path); err == nil {
+	if _, err := parser.ParseFile(filePath); err == nil {
 		t.Fatalf("expected invalid char error")
 	}
 }

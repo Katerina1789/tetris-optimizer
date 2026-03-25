@@ -8,17 +8,23 @@ import (
 )
 
 func TestBacktrackingSimple(t *testing.T) {
-	tetros := []tetromino.Tetromino{
+	tetrominoes := []tetromino.Tetromino{
 		{
-			Blocks: []tetromino.Point{{R: 0, C: 0}, {R: 0, C: 1}, {R: 1, C: 0}, {R: 1, C: 1}},
-			ID:     'A',
+			Blocks: []tetromino.Point{
+				{Row: 0, Column: 0},
+				{Row: 0, Column: 1},
+				{Row: 1, Column: 0},
+				{Row: 1, Column: 1},
+			},
+			ID: 'A',
 		},
 	}
-	board, err := solver.Solve(tetros)
+
+	resultBoard, err := solver.Solve(tetrominoes)
 	if err != nil {
 		t.Errorf("backtracking failed: %v", err)
 	}
-	if board == nil {
+	if resultBoard == nil {
 		t.Error("expected board from backtracking")
 	}
 }

@@ -2,38 +2,48 @@ package board_test
 
 import (
 	"testing"
+
 	"tetris-optimizer/internal/board"
+	"tetris-optimizer/internal/tetromino"
 )
 
 func TestNew(t *testing.T) {
-	b := board.New(5)
-	if b.Size != 5 {
-		t.Errorf("expected size 5, got %d", b.Size)
+	testBoard := board.New(5)
+	if testBoard.Size != 5 {
+		t.Errorf("expected size 5, got %d", testBoard.Size)
 	}
-	for r := 0; r < b.Size; r++ {
-		for c := 0; c < b.Size; c++ {
-			if b.Cells[r][c] != '.' {
-				t.Errorf("expected '.', got %c at (%d,%d)", b.Cells[r][c], r, c)
+	for row := 0; row < testBoard.Size; row++ {
+		for column := 0; column < testBoard.Size; column++ {
+			if testBoard.Cell(row, column) != '.' {
+				t.Errorf("expected '.', got %c at (%d,%d)", testBoard.Cell(row, column), row, column)
 			}
 		}
 	}
 }
 
 func TestString(t *testing.T) {
-	b := board.New(2)
-	b.Cells[0][0] = 'A'
-	b.Cells[1][1] = 'B'
-	expected := "A.\n.B\n"
-	if b.String() != expected {
-		t.Errorf("expected %q, got %q", expected, b.String())
+	testBoard := board.New(2)
+	squareTetromino := tetromino.Tetromino{
+		Blocks: []tetromino.Point{
+			{Row: 0, Column: 0},
+			{Row: 0, Column: 1},
+			{Row: 1, Column: 0},
+			{Row: 1, Column: 1},
+		},
+		ID: 'A',
+	}
+	testBoard.Place(squareTetromino, 0, 0)
+	expected := "AA\nAA\n"
+	if testBoard.String() != expected {
+		t.Errorf("expected %q, got %q", expected, testBoard.String())
 	}
 }
 
 func TestInBounds(t *testing.T) {
-	b := board.New(3)
+	testBoard := board.New(3)
 	tests := []struct {
-		r, c int
-		want bool
+		row, column int
+		want        bool
 	}{
 		{0, 0, true},
 		{2, 2, true},
@@ -42,20 +52,29 @@ func TestInBounds(t *testing.T) {
 		{3, 0, false},
 		{0, 3, false},
 	}
-	for _, tt := range tests {
-		if got := b.InBounds(tt.r, tt.c); got != tt.want {
-			t.Errorf("InBounds(%d,%d) = %v, want %v", tt.r, tt.c, got, tt.want)
+	for _, testCase := range tests {
+		if got := testBoard.InBounds(testCase.row, testCase.column); got != testCase.want {
+			t.Errorf("InBounds(%d,%d) = %v, want %v", testCase.row, testCase.column, got, testCase.want)
 		}
 	}
 }
 
 func TestIsEmpty(t *testing.T) {
-	b := board.New(2)
-	if !b.IsEmpty(0, 0) {
+	testBoard := board.New(2)
+	if !testBoard.IsEmpty(0, 0) {
 		t.Error("expected empty cell")
 	}
-	b.Cells[0][0] = 'A'
-	if b.IsEmpty(0, 0) {
+	squareTetromino := tetromino.Tetromino{
+		Blocks: []tetromino.Point{
+			{Row: 0, Column: 0},
+			{Row: 0, Column: 1},
+			{Row: 1, Column: 0},
+			{Row: 1, Column: 1},
+		},
+		ID: 'A',
+	}
+	testBoard.Place(squareTetromino, 0, 0)
+	if testBoard.IsEmpty(0, 0) {
 		t.Error("expected non-empty cell")
 	}
 }
