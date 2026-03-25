@@ -13,6 +13,10 @@ tetris-optimizer
 *.out
 coverage.tmp
 
+# Profiling files
+cpu.prof
+mem.prof
+
 # Go workspace file
 go.work
 
