@@ -4,41 +4,52 @@ import (
 	"strings"
 )
 
+// Board represents a square game board for placing tetrominoes
 type Board struct {
 	Size  int
-	Cells [][]rune
+	cells [][]rune // Private: use Cell() to access
 }
 
-// New creates a Size x Size board filled with '.'.
+// New creates a Size x Size board filled with '.' (empty cells)
 func New(size int) *Board {
 	cells := make([][]rune, size)
-	for i := range cells {
-		cells[i] = make([]rune, size)
-		for j := range cells[i] {
-			cells[i][j] = '.'
+	for row := range cells {
+		cells[row] = make([]rune, size)
+		for column := range cells[row] {
+			cells[row][column] = '.'
 		}
 	}
-	return &Board{Size: size, Cells: cells}
+	return &Board{Size: size, cells: cells}
 }
 
-// String returns the board as lines of text.
-func (b *Board) String() string {
-	var sb strings.Builder
-	for r := 0; r < b.Size; r++ {
-		for c := 0; c < b.Size; c++ {
-			sb.WriteRune(b.Cells[r][c])
+// String returns the board as lines of text with newlines
+func (board *Board) String() string {
+	var stringBuilder strings.Builder
+	for row := 0; row < board.Size; row++ {
+		for column := 0; column < board.Size; column++ {
+			stringBuilder.WriteRune(board.cells[row][column])
 		}
-		sb.WriteRune('\n')
+		stringBuilder.WriteRune('\n')
 	}
-	return sb.String()
+	return stringBuilder.String()
 }
 
-// InBounds checks if (r,c) is inside the board.
-func (b *Board) InBounds(r, c int) bool {
-	return r >= 0 && r < b.Size && c >= 0 && c < b.Size
+// InBounds checks if the given coordinates are inside the board
+func (board *Board) InBounds(row, column int) bool {
+	return row >= 0 && row < board.Size && column >= 0 && column < board.Size
 }
 
-// IsEmpty reports whether cell (r,c) is '.'.
-func (b *Board) IsEmpty(r, c int) bool {
-	return b.Cells[r][c] == '.'
+// IsEmpty reports whether the cell at (row, column) is empty ('.')
+func (board *Board) IsEmpty(row, column int) bool {
+	return board.cells[row][column] == '.'
+}
+
+// Cell returns the rune at the given position (for reading)
+func (board *Board) Cell(row, column int) rune {
+	return board.cells[row][column]
+}
+
+// setCell sets the rune at the given position (internal use only)
+func (board *Board) setCell(row, column int, value rune) {
+	board.cells[row][column] = value
 }

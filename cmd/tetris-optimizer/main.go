@@ -1,6 +1,6 @@
 package main
 
-// Main entrypoint: parses args, loads tetrominoes, runs solver, prints result or ERROR.
+// Main entrypoint: parses arguments, loads tetrominoes, runs solver, prints result or ERROR.
 
 import (
 	"fmt"
@@ -11,27 +11,27 @@ import (
 )
 
 func main() {
+	// Validate command-line arguments
 	if len(os.Args) != 2 {
-		fmt.Println("ERROR: Input should be: go run ./cmd/tetris-optimizer <input_file>")
-		return
+		fmt.Println("ERROR: Usage: tetris-optimizer <input_file>")
+		os.Exit(1)
 	}
 
-	path := os.Args[1]
-	tetros, err := parser.ParseFile(path)
+	// Parse tetrominoes from input file
+	filePath := os.Args[1]
+	tetrominoes, err := parser.ParseFile(filePath)
 	if err != nil {
 		fmt.Printf("ERROR: %v\n", err)
-		return
-	}
-	if len(tetros) == 0 {
-		fmt.Println("ERROR: No tetrominoes found in file")
-		return
+		os.Exit(1)
 	}
 
-	board, err := solver.Solve(tetros)
+	// Solve the tetromino packing problem
+	resultBoard, err := solver.Solve(tetrominoes)
 	if err != nil {
 		fmt.Printf("ERROR: %v\n", err)
-		return
+		os.Exit(1)
 	}
 
-	fmt.Print(board.String())
+	// Print the solution
+	fmt.Print(resultBoard.String())
 }
