@@ -2,47 +2,72 @@ package parser
 
 import "fmt"
 
-type point struct{ r, c int }
+const (
+	// GridSize is the size of the tetromino grid (4x4)
+	GridSize = 4
+	// RequiredBlocks is the number of blocks each tetromino must have
+	RequiredBlocks = 4
+)
 
-// ValidateGrid checks that the grid has exactly 4 '#' cells and they form a single connected component (4-directionally).
-func ValidateGrid(grid [][]rune) error {
+type point struct {
+	row, column int
+}
+
+// ValidateGrid checks that the grid has exactly 4 '#' cells and they form a single connected component (4-directionally)
+func ValidateGrid(grid [][]rune, tetrominoNumber int) error {
 	var cells []point
-	for r := 0; r < 4; r++ {
-		for c := 0; c < 4; c++ {
-			if grid[r][c] == '#' {
-				cells = append(cells, point{r, c})
+
+	// Count all '#' characters
+	for row := 0; row < GridSize; row++ {
+		for column := 0; column < GridSize; column++ {
+			if grid[row][column] == '#' {
+				cells = append(cells, point{row, column})
 			}
 		}
 	}
-	if len(cells) != 4 {
-		return fmt.Errorf("Invalid number of blocks: expected 4 '#' characters, got %d", len(cells))
+
+	// Check block count
+	if len(cells) != RequiredBlocks {
+		return fmt.Errorf("Tetromino #%d: Invalid number of blocks - expected %d '#' characters, got %d", tetrominoNumber, RequiredBlocks, len(cells))
 	}
 
+	// Check connectivity using BFS (Breadth-First Search)
 	visited := map[point]bool{}
-	var queue []point
-	queue = append(queue, cells[0])
+	queue := []point{cells[0]}
 	visited[cells[0]] = true
 
-	dirs := []point{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+	// Four directions: down, up, right, left
+	directions := []point{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+
 	for len(queue) > 0 {
-		cur := queue[0]
+		current := queue[0]
 		queue = queue[1:]
-		for _, d := range dirs {
-			n := point{cur.r + d.r, cur.c + d.c}
-			if n.r < 0 || n.r >= 4 || n.c < 0 || n.c >= 4 {
+
+		for _, direction := range directions {
+			neighbor := point{current.row + direction.row, current.column + direction.column}
+
+			// Check if neighbor is within grid bounds
+			if neighbor.row < 0 || neighbor.row >= GridSize || neighbor.column < 0 || neighbor.column >= GridSize {
 				continue
 			}
-			if grid[n.r][n.c] != '#' {
+
+			// Check if neighbor is a block
+			if grid[neighbor.row][neighbor.column] != '#' {
 				continue
 			}
-			if !visited[n] {
-				visited[n] = true
-				queue = append(queue, n)
+
+			// Add unvisited neighbors to queue
+			if !visited[neighbor] {
+				visited[neighbor] = true
+				queue = append(queue, neighbor)
 			}
 		}
 	}
-	if len(visited) != 4 {
-		return fmt.Errorf("Blocks not connected: all 4 blocks must be adjacent (up/down/left/right)")
+
+	// All blocks must be reachable from the first block
+	if len(visited) != RequiredBlocks {
+		return fmt.Errorf("Tetromino #%d: Blocks not connected - all %d blocks must be adjacent (up/down/left/right)", tetrominoNumber, RequiredBlocks)
 	}
+
 	return nil
 }

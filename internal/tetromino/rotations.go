@@ -1,37 +1,45 @@
 package tetromino
 
-// Rotations returns all unique 90-degree rotations of a tetromino.
-func Rotations(t Tetromino) []Tetromino {
-	var res []Tetromino
-	seen := map[string]bool{}
+const (
+	// KeyOffset is added to coordinates when creating string keys to handle negative values
+	// Supports coordinates from -16 to 239
+	KeyOffset = 16
+)
 
-	cur := t.Blocks
-	for i := 0; i < 4; i++ {
-		norm := Normalize(cur)
-		key := keyOf(norm)
-		if !seen[key] {
-			seen[key] = true
-			res = append(res, Tetromino{Blocks: norm, ID: t.ID})
+// Rotations returns all unique 90-degree rotations of a tetromino
+func Rotations(tetrominoToRotate Tetromino) []Tetromino {
+	var results []Tetromino
+	seenKeys := map[string]bool{}
+
+	currentBlocks := tetrominoToRotate.Blocks
+	for rotation := 0; rotation < 4; rotation++ {
+		normalized := Normalize(currentBlocks)
+		key := keyOf(normalized)
+		if !seenKeys[key] {
+			seenKeys[key] = true
+			results = append(results, Tetromino{Blocks: normalized, ID: tetrominoToRotate.ID})
 		}
-		cur = rotate90(cur)
+		currentBlocks = rotate90(currentBlocks)
 	}
-	return res
+
+	return results
 }
 
-// rotate90 rotates points 90 degrees around origin.
+// rotate90 rotates points 90 degrees clockwise around the origin
+// Formula: (row, column) -> (column, -row)
 func rotate90(blocks []Point) []Point {
-	out := make([]Point, len(blocks))
-	for i, p := range blocks {
-		out[i] = Point{R: p.C, C: -p.R}
+	rotated := make([]Point, len(blocks))
+	for index, point := range blocks {
+		rotated[index] = Point{Row: point.Column, Column: -point.Row}
 	}
-	return out
+	return rotated
 }
 
-// keyOf builds a compact key for a set of points to detect duplicates.
+// keyOf builds a compact string key for a set of points to detect duplicate rotations
 func keyOf(blocks []Point) string {
-	b := make([]byte, 0, len(blocks)*4)
-	for _, p := range blocks {
-		b = append(b, byte(p.R+16), byte(p.C+16))
+	bytes := make([]byte, 0, len(blocks)*2)
+	for _, point := range blocks {
+		bytes = append(bytes, byte(point.Row+KeyOffset), byte(point.Column+KeyOffset))
 	}
-	return string(b)
+	return string(bytes)
 }

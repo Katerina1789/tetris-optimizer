@@ -1,22 +1,27 @@
 package tetromino
 
-// Normalize shifts blocks so that the shape's top-left is at (0,0).
+// Normalize shifts all blocks so that the shape's top-left corner is at (0,0)
 func Normalize(blocks []Point) []Point {
 	if len(blocks) == 0 {
 		return blocks
 	}
-	minR, minC := blocks[0].R, blocks[0].C
-	for _, p := range blocks {
-		if p.R < minR {
-			minR = p.R
+
+	// Find minimum row and column values
+	minimumRow, minimumColumn := blocks[0].Row, blocks[0].Column
+	for _, point := range blocks {
+		if point.Row < minimumRow {
+			minimumRow = point.Row
 		}
-		if p.C < minC {
-			minC = p.C
+		if point.Column < minimumColumn {
+			minimumColumn = point.Column
 		}
 	}
-	out := make([]Point, len(blocks))
-	for i, p := range blocks {
-		out[i] = Point{p.R - minR, p.C - minC}
+
+	// Shift all blocks to start at (0,0)
+	normalized := make([]Point, len(blocks))
+	for index, point := range blocks {
+		normalized[index] = Point{point.Row - minimumRow, point.Column - minimumColumn}
 	}
-	return out
+
+	return normalized
 }

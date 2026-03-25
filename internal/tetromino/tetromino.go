@@ -1,24 +1,26 @@
 package tetromino
 
+// Point represents a coordinate on the board or within a tetromino
 type Point struct {
-	R, C int
+	Row, Column int
 }
 
+// Tetromino represents a tetris piece with its block positions and display ID
 type Tetromino struct {
-	Blocks []Point // normalized block coordinates
-	ID     rune    // display character (A, B, C, ...)
+	Blocks []Point // Normalized block coordinates (relative to origin)
+	ID     rune    // Display character (A, B, C, ...)
 }
 
-// FromGrid builds a Tetromino from a 4x4 grid of '.' and '#' and normalizes it.
+// FromGrid builds a Tetromino from a 4x4 grid of '.' and '#' characters and normalizes it
 func FromGrid(grid [][]rune, id rune) Tetromino {
-	var pts []Point
-	for r := range grid {
-		for c, ch := range grid[r] {
-			if ch == '#' {
-				pts = append(pts, Point{r, c})
+	var points []Point
+	for row := range grid {
+		for column, character := range grid[row] {
+			if character == '#' {
+				points = append(points, Point{row, column})
 			}
 		}
 	}
-	pts = Normalize(pts)
-	return Tetromino{Blocks: pts, ID: id}
+	points = Normalize(points)
+	return Tetromino{Blocks: points, ID: id}
 }
