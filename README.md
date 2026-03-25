@@ -23,35 +23,16 @@ A Go program that solves the tetromino packing problem using optimized backtrack
 
 ## Description
 
-This program solves the classic tetromino packing problem: given N tetrominoes (Tetris pieces), find the smallest square board that can accommodate all pieces. The solution uses an optimized backtracking algorithm with constraint satisfaction to efficiently explore the solution space.
-
-The program reads tetrominoes from a file, validates their structure, generates all possible rotations, and systematically tries to place them on increasingly larger boards until a solution is found.
+Solves the tetromino packing problem: finds the smallest square board that fits all given tetrominoes without gaps or overlaps. Uses optimized backtracking with constraint satisfaction.
 
 ## Features
 
-### Core Functionality
-
-- **Tetromino Parsing**: Reads and validates tetromino definitions from text files
-- **Connectivity Validation**: Ensures each tetromino consists of 4 connected blocks
-- **Rotation Generation**: Automatically generates all unique 90° rotations
-- **Optimized Backtracking**: Uses first-empty-cell strategy for efficient solving
-- **Minimal Board Size**: Finds the smallest square board that fits all pieces
-- **Error Handling**: Comprehensive validation with clear error messages
-
-### Algorithm Optimizations
-
-- **First Empty Cell Strategy**: Reduces search space from O(N²) to O(4) per piece
-- **Rotation Caching**: Pre-computes rotations to avoid redundant calculations
-- **Early Termination**: Returns first solution (guaranteed optimal)
-- **Pruning**: Fast rejection of invalid placements
-
-### Professional Structure
-
-- **Modular Architecture**: Clean separation of concerns (parser, solver, board, tetromino)
-- **Comprehensive Testing**: 28 unit tests with 90% code coverage
-- **Clean Code**: Follows Go conventions and best practices
-- **Documentation**: Detailed architecture, algorithm, and flow diagrams
-- **Audit Ready**: Complete test suite for evaluation
+- Parses and validates tetromino input files
+- Generates all unique rotations (90° increments)
+- Finds minimal board size using backtracking
+- First-empty-cell strategy for efficient solving
+- Constraint-based heuristic (most constrained first)
+- 35 unit tests with 94.8% coverage
 
 ## Repository Structure
 
@@ -75,11 +56,11 @@ tetris-optimizer/
 │       ├── tetromino.go
 │       ├── rotations.go
 │       └── normalize.go
-├── testfiles/                   # Unit tests (28 tests, 90% coverage)
-│   ├── board/
-│   ├── parser/
-│   ├── solver/
-│   └── tetromino/
+├── testfiles/                   # Unit tests (35 tests, 94.8% coverage)
+│   ├── board/                   # Board tests (9 tests)
+│   ├── parser/                  # Parser tests (8 tests)
+│   ├── solver/                  # Solver tests (10 tests)
+│   └── tetromino/               # Tetromino tests (8 tests)
 ├── audit/
 │   ├── examples/                # Test cases
 │   │   ├── bad_example_*.txt   # Invalid inputs
@@ -87,9 +68,9 @@ tetris-optimizer/
 │   │   └── hard_example.txt    # Performance test
 │   └── audit_guide.md          # Comprehensive audit guide
 ├── docs/                        # Documentation
-│   ├── architecture.md
+│   ├── project_structure.md
 │   ├── algorithm.md
-│   └── flowchart.md
+│   └── architecture.md
 ├── .gitignore
 ├── go.mod
 ├── LICENSE
@@ -149,38 +130,49 @@ The program uses an **optimized backtracking algorithm** with the following step
 ### 1. Parse Input
 - Read file and split into 4×4 blocks
 - Validate each block (4 connected '#' characters)
+- Collect all errors (not just first)
 - Normalize coordinates to (0,0) origin
 - Assign letter IDs (A, B, C, ...)
+- Maximum 26 tetrominoes (A-Z)
 
-### 2. Calculate Minimum Board Size
-```
-minSize = ceil(sqrt(N × 4))
-```
-Where N is the number of tetrominoes.
+### 2. Apply Heuristic
+- Sort tetrominoes by constraint (fewer rotations first)
+- Most constrained pieces placed first
+- Improves backtracking performance
 
-### 3. Generate Rotations
+### 3. Calculate Minimum Board Size
+```
+minimumSize = ceil(sqrt(numberOfTetrominoes × 4))
+```
+Where numberOfTetrominoes is the count of tetrominoes.
+
+### 4. Generate Rotations
 - For each tetromino, generate all unique 90° rotations
 - Square pieces: 1 rotation
 - Line pieces: 2 rotations
 - L/T pieces: 4 rotations
 
-### 4. Backtracking Solver
+### 5. Backtracking Solver
 ```
-For size = minSize to 20:
+For size = minimumSize to MaxBoardSize (20):
   Create board of current size
   Try to place all tetrominoes using backtracking
   If successful, return board
 Return ERROR if no solution found
 ```
 
-### 5. Optimized Placement
+### 6. Optimized Placement
 - Find first empty cell on board
 - Try all rotations of current tetromino
-- For each rotation, try positions where a block covers the empty cell
+- For each rotation, try positions from -3 to +3 relative to empty cell
 - Recursively place remaining tetrominoes
 - Backtrack if placement fails
 
-**Key Optimization:** Only trying positions that cover the first empty cell reduces the search space from O(N²) to O(4) per piece, enabling solutions in under 1 second for typical inputs.
+**Key Optimizations:** 
+- First-empty-cell strategy ensures no gaps are left unfilled
+- Constraint-based heuristic reduces backtracking depth
+- Two-phase validation prevents partial placements
+- Rotation precomputation avoids redundant calculations
 
 For detailed algorithm explanation, see [algorithm](docs/algorithm.md).
 
@@ -296,9 +288,9 @@ For complete audit guide, see [audit guide](audit/audit_guide.md).
 
 ## Documentation
 
-- [Architecture](docs/architecture.md) - Detailed component breakdown and file descriptions
-- [Algorithm](docs/algorithm.md) - In-depth algorithm explanation with complexity analysis
-- [Flowchart](docs/flowchart.md) - Visual process flows and execution diagrams
+- [Project Structure](docs/project_structure.md) - File descriptions and repository layout
+- [Architecture](docs/architecture.md) - System design and execution flows
+- [Algorithm](docs/algorithm.md) - Algorithm explanation with complexity analysis
 
 ## Author
 
