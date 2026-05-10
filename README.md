@@ -1,8 +1,8 @@
 # Tetris-Optimizer
 
 [![Go Version](https://img.shields.io/badge/go-1.23+-00ADD8?style=for-the-badge&logo=go&logoColor=white)](https://golang.org/)
-[![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
-[![Zone01](https://img.shields.io/badge/Zone01-Athens-FF6B35?style=for-the-badge&logo=42&logoColor=white)](https://zone01.gr/)
+[![License](https://img.shields.io/badge/license-MIT-orange?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
+[![Zone01](https://img.shields.io/badge/Zone01-Athens-blue?style=for-the-badge)](https://zone01.gr/gr/)
 
 A Go program that solves the tetromino packing problem using optimized backtracking. Given a set of tetrominoes, it finds the smallest square board that can fit all pieces without gaps or overlaps. Project made as part of the Zone01 Athens curriculum.
 
